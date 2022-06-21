@@ -1,5 +1,7 @@
 <html>
     <head>
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
+        <meta name="description" content="If you were to improve 1% daily" />
         <style>
             body {
                 font-family: Helvetica;
@@ -24,6 +26,7 @@
     </head>
     <body>
         <h2 id="dayCount">Day 0</h2>
+        <blockquote>If you were to improve 1% daily...</blockquote>
         <div class="everyone">
             <div class="seed" id="daily">daily</div>
             <div class="seed" id="weekly">weekly</div>
@@ -44,8 +47,8 @@
             }
 
             updateSize("daily", 10);
-            updateSize("weekly", 200);
-            updateSize("quarterly", 300);
+            updateSize("weekly", 100);
+            updateSize("quarterly", 150);
 
             interval = setInterval(() => {
                 updateSize("daily");
@@ -53,7 +56,7 @@
                 dayNumber % 90 == 0 ? updateSize("quarterly") : ''; 
                 document.querySelector("#dayCount").innerHTML = `Day ${dayNumber++}`;
                 dayNumber == 366 ? clearInterval(interval) : '';
-            }, 100);
+            }, 25);
 
         </script>
     </body>
