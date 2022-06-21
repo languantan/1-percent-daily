@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Helvetica;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .everyone {
+                display: flex;
+                flex-wrap: wrap;
+                flex-basis: 50%;
+                justify-content: center;
+            }
+            .seed {
+                transition: width 0.05s ease-in, height 0.05s ease-in;
+                background-color: orange;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h2 id="dayCount">Day 0</h2>
+        <div class="everyone">
+            <div class="seed" id="daily">daily</div>
+            <div class="seed" id="weekly">weekly</div>
+            <div class="seed" id="quarterly">quarterly</div>
+        </div>
+        <script type="text/javascript">
+            let dayNumber = 0;
+            function updateSize(id, diameter) {
+                element = document.querySelector(`#${id}`);
+                diameter = diameter ? diameter : parseFloat(element.style.width, 10) * 1.01;
+                element.style.width = `${diameter}px`;
+                element.style.height = `${diameter}px`;
+                element.style.borderRadius = `${diameter}px`;
+            }
+
+            updateSize("daily", 10);
+            updateSize("weekly", 200);
+            updateSize("quarterly", 300);
+
+            interval = setInterval(() => {
+                updateSize("daily");
+                dayNumber % 7 == 0 ? updateSize("weekly") : ''; 
+                dayNumber % 90 == 0 ? updateSize("quarterly") : ''; 
+                document.querySelector("#dayCount").innerHTML = `Day ${dayNumber++}`;
+                dayNumber == 366 ? clearInterval(interval) : '';
+            }, 100);
+
+        </script>
+    </body>
+
+</html>
