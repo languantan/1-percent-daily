@@ -1,4 +1,5 @@
 # 1-percent-daily
+[Live here](https://languantan.github.io/1-percent-daily/)
 
 # About
 So I got this advice from the best, (8 times Amazon best selling author, Lewis Lin):
