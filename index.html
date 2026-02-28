@@ -1,64 +1,146 @@
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"/>
-        <meta name="description" content="If you were to improve 1% daily" />
-        <style>
-            body {
-                font-family: Helvetica;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-            .everyone {
-                display: flex;
-                flex-wrap: wrap;
-                flex-basis: 50%;
-                justify-content: center;
-            }
-            .seed {
-                transition: width 0.05s ease-in, height 0.05s ease-in;
-                background-color: orange;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        </style>
-    </head>
-    <body>
-        <h2 id="dayCount">Day 0</h2>
-        <blockquote>If you were to improve 1% daily...</blockquote>
-        <div class="everyone">
-            <div class="seed" id="daily">daily</div>
-            <div class="seed" id="weekly">weekly</div>
-            <div class="seed" id="quarterly">quarterly</div>
+
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;" />
+    <meta name="description" content="If you were to improve 1% daily" />
+    <style>
+        body {
+            font-family: Helvetica;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .everyone {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .seed {
+            transition: width 0.05s ease-in, height 0.05s ease-in;
+            position: absolute;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #daily {
+            background-color: rgba(255, 165, 0, 0.2);
+            border: 2px solid orange;
+            z-index: 1;
+        }
+
+        #weekly {
+            background-color: rgba(0, 0, 255, 0.2);
+            border: 2px solid blue;
+            z-index: 2;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+        }
+
+        .legend-title {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-multiplier {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .box-daily {
+            width: 14px;
+            height: 14px;
+            background-color: orange;
+        }
+
+        .box-weekly {
+            width: 14px;
+            height: 14px;
+            background-color: blue;
+        }
+
+        .footer {
+            float: bottom;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 id="dayCount">Day 0</h2>
+    <blockquote>If you were to improve 1%...</blockquote>
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-title">
+                <div class="box-daily"></div> Daily
+            </div>
+            <div class="legend-multiplier" id="label-daily" style="color: #cc8400;">1.00x</div>
         </div>
-        <div>
-            <img alt="GitHub followers" src="https://img.shields.io/github/followers/languantan?label=%40languantan&style=social">
-            <img alt="Twitter URL" src="https://img.shields.io/twitter/url?label=%40ryantanlg&style=social&url=https%3A%2F%2Ftwitter.com%2Fryantanlg">
+        <div class="legend-item">
+            <div class="legend-title">
+                <div class="box-weekly"></div> Weekly
+            </div>
+            <div class="legend-multiplier" id="label-weekly" style="color: #0000cc;">1.00x</div>
         </div>
-        <script type="text/javascript">
-            let dayNumber = 0;
-            function updateSize(id, diameter) {
-                element = document.querySelector(`#${id}`);
-                diameter = diameter ? diameter : parseFloat(element.style.width, 10) * 1.01;
-                element.style.width = `${diameter}px`;
-                element.style.height = `${diameter}px`;
-                element.style.borderRadius = `${diameter}px`;
-            }
+    </div>
+    <div class="everyone">
+        <div class="seed" id="daily"></div>
+        <div class="seed" id="weekly"></div>
+    </div>
+    <br />
+    <br />
+    <div class="footer">
+        <img alt="GitHub followers"
+            src="https://img.shields.io/github/followers/languantan?label=%40languantan&style=social">
+        <img alt="Twitter URL"
+            src="https://img.shields.io/twitter/url?label=%40ryantanlg&style=social&url=https%3A%2F%2Ftwitter.com%2Fryantanlg">
+    </div>
+    <script type="text/javascript">
+        let dayNumber = 0;
+        function updateSize(id, diameter) {
+            let element = document.querySelector(`#${id}`);
+            let newDiameter = diameter ? diameter : parseFloat(element.style.width, 10) * 1.01;
+            element.style.width = `${newDiameter}px`;
+            element.style.height = `${newDiameter}px`;
+            element.style.borderRadius = `${newDiameter}px`;
 
-            updateSize("daily", 10);
-            updateSize("weekly", 100);
-            updateSize("quarterly", 150);
+            let ratio = newDiameter / 50;
+            document.querySelector(`#label-${id}`).innerHTML = `${ratio.toFixed(2)}x`;
+        }
 
-            interval = setInterval(() => {
-                updateSize("daily");
-                dayNumber % 7 == 0 ? updateSize("weekly") : ''; 
-                dayNumber % 90 == 0 ? updateSize("quarterly") : ''; 
-                document.querySelector("#dayCount").innerHTML = `Day ${dayNumber++}`;
-                dayNumber == 366 ? clearInterval(interval) : '';
-            }, 25);
+        updateSize("daily", 50);
+        updateSize("weekly", 50);
 
-        </script>
-    </body>
+        let interval = setInterval(() => {
+            updateSize("daily");
+            let dayOfWeek = dayNumber % 7;
+            if (dayOfWeek == 0) updateSize("weekly");
+
+            document.querySelector("#dayCount").innerHTML = `Day ${dayNumber++}`;
+            if (dayNumber > 365) clearInterval(interval);
+        }, 25);
+
+    </script>
+
+</body>
 
 </html>
