@@ -22,12 +22,15 @@
         }
 
         .seed {
-            transition: width 0.05s ease-in, height 0.05s ease-in;
+            transition: transform 0.025s linear;
             position: absolute;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            will-change: transform;
         }
 
         #daily {
@@ -118,12 +121,12 @@
         let dayNumber = 0;
         function updateSize(id, diameter) {
             let element = document.querySelector(`#${id}`);
-            let newDiameter = diameter ? diameter : parseFloat(element.style.width, 10) * 1.01;
-            element.style.width = `${newDiameter}px`;
-            element.style.height = `${newDiameter}px`;
-            element.style.borderRadius = `${newDiameter}px`;
+            let currentDiameter = parseFloat(element.dataset.diameter) || 50;
+            let newDiameter = diameter ? diameter : currentDiameter * 1.01;
+            element.dataset.diameter = newDiameter;
 
             let ratio = newDiameter / 50;
+            element.style.transform = `scale(${ratio})`;
             document.querySelector(`#label-${id}`).innerHTML = `${ratio.toFixed(2)}x`;
         }
 
